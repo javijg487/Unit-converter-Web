@@ -18,13 +18,20 @@ public class LengthServiceImpl implements LengthService {
     @Override
     public UnitResultDTO convertLength(Unit unit) {
         UnitResultDTO result = unitConverter.toUnitResultDTO(unit);
-        if (!unit.getUnitFrom().equals("m")) {
-            LengthUnit lengthUnitFrom = LengthUnit.valueOf(unit.getUnitFrom().toUpperCase());
-            unit.setValue(unit.getValue() * lengthUnitFrom.getConversionFactor());
+        try {
+            if (!unit.getUnitFrom().equalsIgnoreCase("m")) {
+                LengthUnit lengthUnitFrom = LengthUnit.valueOf(unit.getUnitFrom().toUpperCase());
+                unit.setValue(unit.getValue() * lengthUnitFrom.getConversionFactor());
+            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unidad de longitud inválida: " + unit.getUnitFrom());
         }
-        LengthUnit lengthUnitTo = LengthUnit.valueOf(unit.getUnitTo().toUpperCase());
-        result.setResult(unit.getValue() / lengthUnitTo.getConversionFactor());
-
+        try {
+            LengthUnit lengthUnitTo = LengthUnit.valueOf(unit.getUnitTo().toUpperCase());
+            result.setResult(unit.getValue() / lengthUnitTo.getConversionFactor());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unidad de longitud inválida: " + unit.getUnitTo());
+        }
         return result;
     }
 }

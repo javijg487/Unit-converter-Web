@@ -8,6 +8,9 @@ import com.roadmap.proyecto2.models.UnitResultDTO;
 import com.roadmap.proyecto2.services.LengthService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,5 +24,10 @@ public class LengthController {
     @PostMapping("/convert")
     public UnitResultDTO postMethodName(@RequestBody Unit unit) {
         return lengthService.convertLength(unit);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
