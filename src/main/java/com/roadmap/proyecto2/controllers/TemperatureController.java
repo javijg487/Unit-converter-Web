@@ -14,7 +14,7 @@ import com.roadmap.proyecto2.models.UnitResultDTO;
 import com.roadmap.proyecto2.services.TemperatureService;
 
 @RestController
-@RequestMapping("/temperature")
+@RequestMapping("api/v1/temperature")
 public class TemperatureController {
 
     @Autowired
